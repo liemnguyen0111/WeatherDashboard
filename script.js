@@ -54,8 +54,8 @@ else
 	<p>Humidity: ${data.main.humidity}</p>
 	<p>Pressure: ${data.main.pressure}</p>
 	<p>Temperature: ${Math.floor(data.main.temp - 273.15)}°C</p>
-	<p>Temperature Min: ${Math.floor(data.main.temp_max - 273.15)}°C</p>
-	<p>Temeprature Max: ${Math.floor(data.main.temp_min - 273.15)}°C</p>
+	<p>Temperature Min: ${Math.floor(data.main.temp_min - 273.15)}°C</p>
+	<p>Temeprature Max: ${Math.floor(data.main.temp_max - 273.15)}°C</p>
 	`
 	$("#weatherInfo").empty()
 	$("#weatherInfo").append(weatherInfo)
