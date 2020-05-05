@@ -1,0 +1,19 @@
+body
+{
+    /* background-color: rgba(35, 112, 184, 0.466); */
+    background-image: url("weatherInfo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+#weatherInfo
+{
+    background-color: rgba(4, 8, 8, 0.637);
+}
+
+#weatherInfo p
+{
+    text-align: left;
+    margin-left: 20px;
+    color: rgb(255, 255, 255);
+}
