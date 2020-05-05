@@ -1,84 +1,35 @@
-// fetch("https://weather-ydn-yql.media.yahoo.com/forecastrss?location=sunnyvale,ca", {
-//   method: "GET",
-//   headers: { 
-//     Host: "weather-ydn-yql.media.yahoo.com",
-//     "X-Yahoo-App-Id" : "WeatherDashboard",
-//     Authorization : "OAuth",
-//     oauth_consumer_key : "dj0yJmk9bUxVM1I3c0VRMTlRJmQ9WVdrOVRVMUZOVEZOTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTQw",
-//     oauth_signature_method : "HMAC-SHA1",
-//     oauth_timestamp : "YOUR_TIMESTAMP",
-//     oauth_nonce : "YOUR_NONCE",
-//     oauth_version : "1.0",
-//     oauth_signature : "YOUR_GENERATED_SIGNATURE",
-//     "cache-control" : "no-cache"
-// }
-// })
-// .then(response => response.json())
-// .then(data => {
-//     console.log(data)
-// })
-// .catch(err => {
-// 	console.log(err);
-// });
-
-// "oauth_consumer_key" : "dj0yJmk9bUxVM1I3c0VRMTlRJmQ9WVdrOVRVMUZOVEZOTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTQw",
-// "oauth_consumer_secret" : "187eb309226641edc46b46b46e159f58da29956a",
-
-// var OAuth = require('oauth')
-// var header = {
-//     "X-Yahoo-App-Id": "WeatherDashboard"
-// };
-// var request = new OAuth.OAuth(
-//     null,
-//     null,
-//     'dj0yJmk9bUxVM1I3c0VRMTlRJmQ9WVdrOVRVMUZOVEZOTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTQw',
-//     '187eb309226641edc46b46b46e159f58da29956a',
-//     '1.0',
-//     null,
-//     'HMAC-SHA1',
-//     null,
-//     header
-// );
-// request.get(
-//     'https://weather-ydn-yql.media.yahoo.com/forecastrss?location=sunnyvale,ca&format=json',
-//     null,
-//     null,
-//     function (err, data, result) {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             console.log(data)
-//         }
-//     }
-// );
-
 let key = "482a4e3afc3eec8d25d4a69a32e36417"
+let a
 
 $(this).on(`click`,event =>
 	{
-		if(event.target.innerHTML === `search`)
-		{
-			console.log("isclick")
-			processEvent($("#autocomplete-input").val().replace(" ", "+") )
-			$("#autocomplete-input").val(``) 
-		}
+		
+		
+		if(event.target.attributes.alt != undefined && 
+			event.target.attributes.alt.value === "searchBtn" && 
+			$("#autocomplete-input").val().length > 0 )
+			{
+				processCurrentWeather($("#autocomplete-input").val().replace(" ", "+") )
+				$("#autocomplete-input").val(``) 
+			}
+		
 	}
 	)
 
 $("#autocomplete-input").keyup(event =>
 {
 	// console.log(event.originalEvent.key)
-	if(event.originalEvent.key === "Enter")
+	if(event.originalEvent.key === "Enter" && $("#autocomplete-input").val().length > 0)
 	{
-		processEvent($("#autocomplete-input").val().replace(" ", "+") )
+		processCurrentWeather($("#autocomplete-input").val().replace(" ", "+"))
 		$("#autocomplete-input").val(``) 
 	}
 }
 )
 
-let processEvent = (keySearch) =>
+let processCurrentWeather = (keySearch) =>
 {
-	fetch(`https://api.openweathermap.org/data/2.5/weather?q=${keySearch}&appid=${key}`)
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${keySearch}&appid=${key}`)
 .then(res=>res.json())
 .then(data =>{
 console.log(data)
@@ -110,6 +61,18 @@ else
 	$("#weatherInfo").append(weatherInfo)
 
 }
+processHourlyForecast(data,keySearch)
 }).catch(err=>console.log(error))
+}
+
+let processHourlyForecast = (data,keyWord) =>
+{
+	fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&
+	exclude=hourly,daily&appid=${key}`)
+	.then(res=>res.json())
+	.then(data =>{
+	console.log(data)
+	
+	}).catch(err=>console.log(error))
 }
 
